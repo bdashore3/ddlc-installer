@@ -5,67 +5,96 @@ import os
 import shutil
 import distutils.dir_util
 import ddlc_downloader
+import standalonelogic
+import time
 
 def download(mac):
-    print ("Downloading...")
     if mac==True:
+        print ("Downloading Mac...")
         link = ddlc_downloader.get_ddlc_url(mac)
         ddlc_downloader.download_file(link, "ddlc_mac.zip")
     else:
+        print ("Downloading PC...")
         link = ddlc_downloader.get_ddlc_url(mac)
         ddlc_downloader.download_file(link, "ddlc_pc.zip")
 
 def extract(mac):
-    print ("Extracting....")
     if mac == True:
+        print ("Extracting Mac....")
         cwd = os.getcwd()
         shutil.unpack_archive("ddlc_mac.zip", extract_dir="mac", format="zip")
         os.chmod(cwd + "/mac/DDLC.app/Contents/MacOS/ddlc", 0o775)
         os.chmod(cwd + "/mac/DDLC.app/Contents/MacOS/lib/darwin-x86_64/ddlc", 0o775)
         os.remove("ddlc_mac.zip")
     else:
+        print ("Extracting PC....")
         cwd = os.getcwd()
         shutil.unpack_archive("ddlc_pc.zip", extract_dir=cwd, format="zip")
         os.remove("ddlc_pc.zip")
 
-def install(os_choice):
+def install(os_choice, standalone):
+    def os_install(os_choice):
+        if os_choice == "mac" or os_choice == "Mac":
+            os.remove(cwd + "/mac/DDLC.app/Contents/Resources/autorun/game/scripts.rpa")
+            distutils.dir_util.copy_tree("game", cwd + "/mac/DDLC.app/Contents/Resources/autorun/game")
+        elif os_choice == "windows" or os_choice == "Windows":
+            os.remove(cwd + "\DDLC-1.1.1-pc\game\scripts.rpa")
+            distutils.dir_util.copy_tree("game", cwd + "\DDLC-1.1.1-pc\game")
+        elif os_choice == "linux" or os_choice == "Linux":
+            os.remove(cwd + "/DDLC-1.1.1-pc/game/scripts.rpa")
+            distutils.dir_util.copy_tree("game", cwd + "/DDLC-1.1.1-pc/game")
     print ("Installing mod...")
     cwd = os.getcwd()
-    if os_choice == "mac" or os_choice == "Mac":
-        os.remove(cwd + "/mac/DDLC.app/Contents/Resources/autorun/game/scripts.rpa")
-        distutils.dir_util.copy_tree("game", cwd + "/mac/DDLC.app/Contents/Resources/autorun/game")
-    elif os_choice == "windows" or os_choice == "Windows":
-        os.remove(cwd + "\DDLC-1.1.1-pc\game\scripts.rpa")
-        distutils.dir_util.copy_tree("game", cwd + "\DDLC-1.1.1-pc\game")
-    elif os_choice == "linux" or os_choice == "Linux":
-        os.remove(cwd + "/DDLC-1.1.1-pc/game/scripts.rpa")
-        distutils.dir_util.copy_tree("game", cwd + "/DDLC-1.1.1-pc/game")
+    if os_choice == "Mac" or os_choice == "mac" and standalone == True:
+        os_choice = "Linux"
+        os_install(os_choice)
+    else:
+        os_install(os_choice)
 
+print ("\n" * 100)
+print ("Welcome to the DDLC:TSC installer")
+time.sleep(4)
 print ("The mod is offered in two choices, standalone or computer-dependent")
+time.sleep(4)
 print ("....")
 print ("Standalone means that you can run the mod in a cross-platform setting")
 print ("with all files saved")
+time.sleep(4)
 print ("....")
 print ("Computer-dependent means your saves will be stored on your computer and")
 print ("the mod will run only on your OS")
+time.sleep(4)
 print ("........")
-print ("Mod Dir")
-print ("")
-print ("....")
 while True:
-    os_choice = input("Please enter your OS ")
-    choice = "computer-dependent"
-    if choice == "computer-dependent":
+    os_choice = input("Please enter your OS - ")
+    choice = input("Do you want standalone or computer-dependent? - ")
+    if choice == "standalone" or choice == "Standalone":
+        standalone = True
+        mac = True
+        download(mac)
+        extract(mac)
+        mac = False
+        download(mac)
+        extract(mac)
+        standalonelogic.move_mac()
+        standalonelogic.standalone_run(os_choice)
+        os.mkdir("DDLC-1.1.1-pc/game/saves")
+        install(os_choice, standalone)
+        break
+    elif choice == "computer-dependent" or choice == "Computer-dependent" or choice == "Computer Dependent" or choice == "computer-Dependent":
         if os_choice == "mac" or os_choice == "Mac":
+            standalone = False
             mac=True
             download(mac)
             extract(mac)
-            install(os_choice)
+            install(os_choice, standalone)
             break
+        
         elif os_choice == "windows" or os_choice == "Windows" or os_choice == "linux" or os_choice == "Linux":
+            standalone = False
             mac=False
             download(mac)
             extract(mac)
-            install(os_choice)
+            install(os_choice, standalone)
             break
 print ("Installation finished! Enjoy the mod!")
