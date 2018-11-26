@@ -1,5 +1,6 @@
 import requests
 import shutil
+import os
 
 def download_file(url, destination):
     """
@@ -11,6 +12,10 @@ def download_file(url, destination):
     with open(destination, "wb") as output_file:
         shutil.copyfileobj(r.raw, output_file)
 
+def extract_mod(zip):
+    print ("Downloading mod...")
+    cwd = os.getcwd()
+    shutil.unpack_archive(zip, extract_dir=cwd, format="zip")
+
 if __name__=='__main__':
-    print("Downloading TSC")
     download_file(link, "TSC.zip")

@@ -78,10 +78,11 @@ while True:
         download(mac)
         extract(mac)
         standalonelogic.move_mac()
-        standalonelogic.standalone_run(os_choice)
+        standalonelogic.standalone_run()
         os.mkdir("DDLC-1.1.1-pc/game/saves")
         mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-        install(os_choice, standalone, TSC-code-master)
+        mod_download.extract_mod("TSC.zip")
+        install(os_choice, standalone, "TSC-code-master")
         break
     elif choice == "computer-dependent" or choice == "Computer-dependent" or choice == "Computer Dependent" or choice == "computer-Dependent":
         if os_choice == "mac" or os_choice == "Mac":
@@ -90,7 +91,8 @@ while True:
             download(mac)
             extract(mac)
             mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-            install(os_choice, standalone, folder)
+            mod_download.extract_mod("TSC.zip")
+            install(os_choice, standalone, "TSC-code-master")
             break
         
         elif os_choice == "windows" or os_choice == "Windows" or os_choice == "linux" or os_choice == "Linux":
@@ -99,6 +101,7 @@ while True:
             download(mac)
             extract(mac)
             mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-            install(os_choice, standalone, folder)
+            mod_download.extract_mod("TSC.zip")
+            install(os_choice, standalone, "TSC-code-master")
             break
 print ("Installation finished! Enjoy the mod!")
