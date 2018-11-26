@@ -7,6 +7,7 @@ import distutils.dir_util
 import ddlc_downloader
 import standalonelogic
 import time
+import mod_download
 
 def download(mac):
     if mac==True:
@@ -32,17 +33,17 @@ def extract(mac):
         shutil.unpack_archive("ddlc_pc.zip", extract_dir=cwd, format="zip")
         os.remove("ddlc_pc.zip")
 
-def install(os_choice, standalone):
+def install(os_choice, standalone, folder):
     def os_install(os_choice):
         if os_choice == "mac" or os_choice == "Mac":
             os.remove(cwd + "/mac/DDLC.app/Contents/Resources/autorun/game/scripts.rpa")
-            distutils.dir_util.copy_tree("game", cwd + "/mac/DDLC.app/Contents/Resources/autorun/game")
+            distutils.dir_util.copy_tree(folder + "/game", cwd + "/mac/DDLC.app/Contents/Resources/autorun/game")
         elif os_choice == "windows" or os_choice == "Windows":
             os.remove(cwd + "\DDLC-1.1.1-pc\game\scripts.rpa")
-            distutils.dir_util.copy_tree("game", cwd + "\DDLC-1.1.1-pc\game")
+            distutils.dir_util.copy_tree(folder + "\game", cwd + "\DDLC-1.1.1-pc\game")
         elif os_choice == "linux" or os_choice == "Linux":
             os.remove(cwd + "/DDLC-1.1.1-pc/game/scripts.rpa")
-            distutils.dir_util.copy_tree("game", cwd + "/DDLC-1.1.1-pc/game")
+            distutils.dir_util.copy_tree(folder + "/game", cwd + "/DDLC-1.1.1-pc/game")
     print ("Installing mod...")
     cwd = os.getcwd()
     if os_choice == "Mac" or os_choice == "mac" and standalone == True:
@@ -79,7 +80,8 @@ while True:
         standalonelogic.move_mac()
         standalonelogic.standalone_run(os_choice)
         os.mkdir("DDLC-1.1.1-pc/game/saves")
-        install(os_choice, standalone)
+        mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
+        install(os_choice, standalone, TSC-code-master)
         break
     elif choice == "computer-dependent" or choice == "Computer-dependent" or choice == "Computer Dependent" or choice == "computer-Dependent":
         if os_choice == "mac" or os_choice == "Mac":
@@ -87,7 +89,8 @@ while True:
             mac=True
             download(mac)
             extract(mac)
-            install(os_choice, standalone)
+            mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
+            install(os_choice, standalone, folder)
             break
         
         elif os_choice == "windows" or os_choice == "Windows" or os_choice == "linux" or os_choice == "Linux":
@@ -95,6 +98,7 @@ while True:
             mac=False
             download(mac)
             extract(mac)
-            install(os_choice, standalone)
+            mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
+            install(os_choice, standalone, folder)
             break
 print ("Installation finished! Enjoy the mod!")
