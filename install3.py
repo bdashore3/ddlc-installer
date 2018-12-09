@@ -71,6 +71,15 @@ while True:
     choice = input("Do you want standalone or computer-dependent? - ")
     if choice == "standalone" or choice == "Standalone":
         cwd = os.getcwd()
+        try:
+            os.mkdir("DDLC-1.1.1-pc/game/saves")
+        except FileExistsError:
+            print ("Looks like you already have the mod installed!")
+            save_preserve=input("Would you like to preserve your saves? Yes or No? - ")
+            if save_preserve == "Yes" or save_preserve == "yes":
+                save_preserve=True
+                distutils.dir_util.copy_tree(cwd + "/DDLC-1.1.1-pc/game/saves", cwd + "/saves")
+                shutil.rmtree("DDLC-1.1.1-pc/game/saves")
         standalone = True
         mac = True
         download(mac)
@@ -80,7 +89,12 @@ while True:
         extract(mac)
         standalonelogic.move_mac()
         standalonelogic.standalone_run()
-        os.mkdir("DDLC-1.1.1-pc/game/saves")
+        if save_preserve == True:
+            print("Putting your saves back")
+            distutils.dir_util.copy_tree("saves", "DDLC-1.1.1-pc/game/saves")
+            shutil.rmtree(cwd + "/saves")
+        else:
+            os.mkdir("DDLC-1.1.1-pc/game/saves")
         mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
         mod_download.extract_mod("TSC.zip", cwd)
         install(os_choice, standalone, "TSC-code-master")
