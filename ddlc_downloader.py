@@ -29,6 +29,6 @@ def download_file(url, destination):
 
 if __name__ == '__main__':
     print("Getting download link")
-    link = get_ddlc_url()
+    link = get_ddlc_url(False)
     print("Downloading DDLC")
     download_file(link, "ddlc.zip")

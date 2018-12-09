@@ -70,6 +70,7 @@ while True:
     os_choice = input("Please enter your OS - ")
     choice = input("Do you want standalone or computer-dependent? - ")
     if choice == "standalone" or choice == "Standalone":
+        cwd = os.getcwd()
         standalone = True
         mac = True
         download(mac)
@@ -81,8 +82,10 @@ while True:
         standalonelogic.standalone_run()
         os.mkdir("DDLC-1.1.1-pc/game/saves")
         mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-        mod_download.extract_mod("TSC.zip")
+        mod_download.extract_mod("TSC.zip", cwd)
         install(os_choice, standalone, "TSC-code-master")
+        os.remove("TSC.zip")
+        shutil.rmtree("TSC-code-master")
         break
     elif choice == "computer-dependent" or choice == "Computer-dependent" or choice == "Computer Dependent" or choice == "computer-Dependent":
         if os_choice == "mac" or os_choice == "Mac":
@@ -91,8 +94,10 @@ while True:
             download(mac)
             extract(mac)
             mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-            mod_download.extract_mod("TSC.zip")
+            mod_download.extract_mod("TSC.zip", cwd)
             install(os_choice, standalone, "TSC-code-master")
+            os.remove("TSC.zip")
+            shutil.rmtree("TSC-code-master")
             break
         
         elif os_choice == "windows" or os_choice == "Windows" or os_choice == "linux" or os_choice == "Linux":
@@ -101,7 +106,9 @@ while True:
             download(mac)
             extract(mac)
             mod_download.download_file("https://github.com/DDLC-TSC/TSC-code/archive/master.zip", "TSC.zip")
-            mod_download.extract_mod("TSC.zip")
+            mod_download.extract_mod("TSC.zip", cwd)
             install(os_choice, standalone, "TSC-code-master")
+            os.remove("TSC.zip")
+            shutil.rmtree("TSC-code-master")
             break
 print ("Installation finished! Enjoy the mod!")
