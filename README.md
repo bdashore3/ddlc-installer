@@ -15,5 +15,6 @@ PCs/Macs
 
 Hope you enjoy!
 
-Depends on: Python 3
-- Get it here: https://python.org
+Depends on: Python 3 and the requests module
+- Get python 3 here: https://python.org or through your package manager (brew install python3)
+- Install the requests module by typing "pip install requests" in your command prompt/terminal
